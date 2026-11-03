@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import app.morphe.extension.shared.settings.BooleanSetting;
 import app.morphe.extension.youtube.addon.AddOnApi;
+import app.morphe.extension.youtube.patches.LegacyPlayerControlsPatch;
 import app.morphe.extension.youtube.patches.VideoInformation;
+import app.morphe.extension.youtube.videoplayer.PlayerOverlayButton;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,14 +40,25 @@ public final class GeminiAsk {
     static final String[] PACKAGES = {GEMINI, "com.yandex.aliceapp"};
     static final int YANDEX = 1;
     static final BooleanSetting BUTTON = new BooleanSetting("morphe_gemini_ask_button", true);
+    static final String ICON = "morphe_gemini_ask_button";
 
     /** Called from AddOnManager.registerAddOns(). */
     public static void register() {
-        AddOnApi.addLegacyPlayerControlsListener(controls -> AddOnApi.createLegacyButton(
-                "gemini_ask", controls, "morphe_gemini_ask_button", BUTTON,
-                v -> start(v.getContext(), new Intent(Intent.ACTION_SEND).setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + VideoInformation.getVideoId())),
-                null));
+        AddOnApi.addPlayerOverlayButtonsListener(controls -> {
+            if (!LegacyPlayerControlsPatch.RESTORE_OLD_PLAYER_BUTTONS) {
+                PlayerOverlayButton.addButton(controls, ICON, BUTTON::get, GeminiAsk::onClick, null);
+            }
+        });
+        AddOnApi.addLegacyPlayerControlsListener(controls -> {
+            if (LegacyPlayerControlsPatch.RESTORE_OLD_PLAYER_BUTTONS) {
+                AddOnApi.createLegacyButton("gemini_ask", controls, ICON, BUTTON, GeminiAsk::onClick, null);
+            }
+        });
+    }
+
+    static void onClick(View v) {
+        start(v.getContext(), new Intent(Intent.ACTION_SEND).setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, "https://youtu.be/" + VideoInformation.getVideoId()));
     }
 
     public static void start(Context context, Intent intent) {

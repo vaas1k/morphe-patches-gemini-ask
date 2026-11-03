@@ -8,6 +8,9 @@ import app.morphe.extension.shared.settings.BooleanSetting;
 import app.morphe.extension.youtube.videoplayer.LegacyPlayerControlButton;
 
 public final class AddOnApi {
+    public static void addPlayerOverlayButtonsListener(Consumer<View> listener) {
+    }
+
     public static void addLegacyPlayerControlsListener(Consumer<View> listener) {
     }
 
