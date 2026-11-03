@@ -20,13 +20,13 @@ private const val ICON = """<vector xmlns:android="http://schemas.android.com/ap
 // Merged into the Morphe settings by the official settings patch, next to the download button switch.
 private const val PREFERENCES = """<screen after="morphe_external_downloader_overlay_button">
         <SwitchPreference xmlns:android="http://schemas.android.com/apk/res/android"
-            android:key="morphe_gemini_ask_button" android:defaultValue="true"
-            android:title="AI button" android:summaryOn="AI button is shown" android:summaryOff="AI button is hidden" />
+            android:key="morphe_gemini_button" android:defaultValue="true"
+            android:title="Gemini button" android:summaryOn="Gemini button is shown" android:summaryOff="Gemini button is hidden" />
     </screen>"""
 
 private val geminiAskResourcePatch = resourcePatch {
     execute {
-        get("res/drawable/morphe_gemini_ask_button.xml").writeText(ICON)
+        get("res/drawable/morphe_gemini_button.xml").writeText(ICON)
 
         val prefs = get("morphe_addon_prefs.xml")
         val declarations = if (prefs.exists()) prefs.readText() else "<morphe-add-on-preferences>\n</morphe-add-on-preferences>\n"
@@ -37,7 +37,7 @@ private val geminiAskResourcePatch = resourcePatch {
 @Suppress("unused")
 val geminiAskPatch = bytecodePatch(
     name = "Gemini Ask",
-    description = "Adds an AI button to the player that sends the video link to Gemini. " +
+    description = "Adds a Gemini button to the player that sends the video link to the Gemini app. " +
         "Apply together with the official Morphe patches.",
     default = true
 ) {

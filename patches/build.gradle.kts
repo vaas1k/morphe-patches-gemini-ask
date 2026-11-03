@@ -3,7 +3,7 @@ group = "app.geminiask"
 patches {
     about {
         name = "Gemini Ask Patches"
-        description = "AI button in the YouTube player that sends the video link to Gemini"
+        description = "Gemini button in the YouTube player that sends the video link to the Gemini app"
         source = "git@github.com:vaas1k/morphe-patches-gemini-ask.git"
         author = "vaas1k"
         contact = "na"
