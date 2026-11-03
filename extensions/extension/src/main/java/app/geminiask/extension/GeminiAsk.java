@@ -30,14 +30,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class GeminiAsk {
-    static final String GEMINI = "com.google.android.apps.bard";
     static final String KEY = "morphe_gemini_prompts";
     static final String TARGET_KEY = "morphe_gemini_target";
     static final String DEFAULT = "Перескажи по-русски\nГлавные тезисы\nОтветь на вопросы по видео";
     static final String NO_PROMPT = "Без промпта";
     static final String[] TARGETS = {"Gemini", "Яндекс"};
     static final String[] TARGET_IDS = {"gemini", "yandex"};
-    static final String[] PACKAGES = {GEMINI, "com.yandex.aliceapp"};
+    static final String[] PACKAGES = {"com.google.android.apps.bard", "com.yandex.aliceapp"};
     static final int YANDEX = 1;
     static final BooleanSetting BUTTON = new BooleanSetting("morphe_gemini_ask_button", true);
     static final String ICON = "morphe_gemini_ask_button";
@@ -170,14 +169,14 @@ public final class GeminiAsk {
         return null;
     }
 
-    /** Self-check of the pure logic: java -cp classes:android.jar app.morphe.extension.youtube.GeminiAsk */
+    /** Self-check of the pure logic: java -cp classes:android.jar app.geminiask.extension.GeminiAsk */
     public static void main(String[] a) {
         if (!parse(DEFAULT).equals(Arrays.asList("Перескажи по-русски", "Главные тезисы", "Ответь на вопросы по видео"))) throw new AssertionError("parse default");
         if (parse(" a \n\n b\n").size() != 2) throw new AssertionError("parse blanks");
         if (!text("p", "u").equals("p\nu")) throw new AssertionError("text");
         if (!text("", "u").equals("u")) throw new AssertionError("no prompt");
         if (!yandexUrl("https://youtu.be/ulHhwyCeP3M").equals("https://300.ya.ru/?url=https%3A%2F%2Fyoutu.be%2FulHhwyCeP3M")) throw new AssertionError("yandexUrl");
-        if (targetIndex(null) != 0 || targetIndex("bogus") != 0 || targetIndex("perplexity") != 0 || targetIndex("yandex") != YANDEX) throw new AssertionError("targetIndex");
+        if (targetIndex(null) != 0 || targetIndex("bogus") != 0 || targetIndex("yandex") != YANDEX) throw new AssertionError("targetIndex");
         System.out.println("GeminiAsk self-check OK");
     }
 }
